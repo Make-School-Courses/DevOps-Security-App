@@ -16,7 +16,7 @@ app.use(express.static('images'));
 app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
 
 app.get('/', function (req, res) {
-  res.render('index', { username: null });
+  res.render('index', { username: null, bg_color: req.query.bg });
 });
 
 app.post('/', async (req, res, next) => {
