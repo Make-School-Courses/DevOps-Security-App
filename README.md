@@ -4,6 +4,7 @@ A sample NodeJS app that can be used to study and explore common vulnerabilities
 
 ## Setup
 
-  - Install Node (>= 8)
+  - Install Node (>= 8) from nodejs.org
+  - Install sqlite `brew install sqlite`
   - Run `npm install`
   - Run app with `npm start`
