@@ -11,6 +11,8 @@ app.engine('hbs', hbs.express4({
 }));
 app.set('views', __dirname + '/public');
 app.set('view engine', 'hbs');
+
+app.use(express.static('images'));
 app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
 
 app.get('/', function (req, res) {
