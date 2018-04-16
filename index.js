@@ -53,4 +53,4 @@ Promise.resolve()
   // Display error message if something went wrong
   .catch((err) => console.error(err.stack))
   // Finally, launch the Node.js app
-  .finally(() => app.listen(3000));
+  .finally(() => app.listen(process.env.PORT || 3000));
