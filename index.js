@@ -15,8 +15,14 @@ app.set('view engine', 'hbs');
 app.use(express.static('images'));
 app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
 
-app.get('/', function (req, res) {
-  res.render('index', { username: null, bg_color: req.query.bg });
+app.get('/', async (req, res, next) => {
+  try {
+    let posts = await db.all("SELECT * FROM Post");
+
+    res.render('index', { username: null, bg_color: req.query.bg, posts: posts });
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.post('/', async (req, res, next) => {
@@ -28,16 +34,42 @@ app.post('/', async (req, res, next) => {
     let login = req.body.inputEmail;
     let password = req.body.inputPassword;
     let result = null;
+    let posts = await db.all("SELECT * FROM Post");
 
     if (login && password) {
       // console.log(login);
       // console.log(password);
       result = await db.get("SELECT name FROM User WHERE login = '"+login+"' AND password = '"+password+"'");
     }
-    console.log(result);
+
+    let is_admin = result && result.name && (result.name == 'Cool Admin');
 
     res.render('index', {
+      is_admin: is_admin,
       username: result && result.name,
+      posts: posts,
+    });
+
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/posts', async (req, res, next) => {
+  try {
+    let title = req.body.inputTitle;
+    let body = req.body.inputBody;
+    let result = null;
+
+    if (title && body) {
+      result = await db.run("INSERT INTO Post (title, body) VALUES('"+title+"', '"+body+"')");
+    }
+
+    let posts = await db.all("SELECT * FROM Post");
+
+    res.render('index', {
+      msg: !!result ? 'Post created with success' : 'Error creating post',
+      posts: posts,
     });
 
   } catch (err) {
