@@ -24,13 +24,14 @@ app.get('/', async (req, res, next) => {
 
     if (login) {
       let result = await db.get("SELECT name FROM User WHERE login = '"+login+"'");
-
       let is_admin = result && result.name && (result.name == 'Cool Admin');
+      let msg = req.query.msg;
 
       res.render('index', {
         is_admin: is_admin,
         username: result && result.name,
         posts: posts,
+        msg: msg,
       });
     } else {
       res.render('index', { username: null, bg_color: req.query.bg, posts: posts });
@@ -92,12 +93,10 @@ app.post('/posts', async (req, res, next) => {
       result = await db.run("INSERT INTO Post (title, body) VALUES('"+title+"', '"+body+"')");
     }
 
-    let posts = await db.all("SELECT * FROM Post");
 
-    res.render('index', {
-      msg: !!result ? 'Post created with success' : 'Error creating post',
-      posts: posts,
-    });
+    let msg = !!result ? 'Post created with success' : 'Error creating post';
+
+    res.redirect('/?msg='+msg);
 
   } catch (err) {
     next(err);
