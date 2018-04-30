@@ -72,6 +72,16 @@ app.post('/', async (req, res, next) => {
   }
 });
 
+app.get('/logout', (req, res, next) => {
+  try {
+    res.clearCookie('logged');
+
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.post('/posts', async (req, res, next) => {
   try {
     let title = req.body.inputTitle;
