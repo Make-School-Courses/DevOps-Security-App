@@ -114,11 +114,21 @@
           <article>
             <h3>{{title}}</h3>
             <div>{{{body}}}</div>
+            <div>Claps:{{claps}}</div>
           </article>
         {{/each}}
       </div>
     </main>
   </div>
 <script async href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+  function clap() {
+    fetch('localhost:3000/clap').then((claps) => {
+      console.log("claps:"+claps)
+    }).catch((err) => {
+      console.log(err.message)
+    })
+  }
+</script>
 </body>
 </html>

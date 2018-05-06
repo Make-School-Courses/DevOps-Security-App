@@ -76,7 +76,6 @@ app.post('/', async (req, res, next) => {
 app.get('/logout', (req, res, next) => {
   try {
     res.clearCookie('logged');
-
     res.redirect('/');
   } catch (err) {
     next(err);
@@ -92,7 +91,6 @@ app.post('/posts', async (req, res, next) => {
     if (title && body) {
       result = await db.run("INSERT INTO Post (title, body) VALUES('"+title+"', '"+body+"')");
     }
-
 
     let msg = !!result ? 'Post created with success' : 'Error creating post';
 
